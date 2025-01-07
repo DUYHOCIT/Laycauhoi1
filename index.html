@@ -139,6 +139,11 @@
             color: #555;
             font-size: 14px;
         }
+
+        #downloadButton {
+            margin-top: 10px;
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
     </style>
 </head>
 <body>
@@ -158,7 +163,6 @@
                 <li>Nhấn nút <strong>"Thêm khung nhập JSON"</strong> nếu bạn muốn nhập thêm dữ liệu JSON khác.</li>
                 <li>Nhấn nút <strong>"Xử lý"</strong> để chuyển đổi dữ liệu và hiển thị kết quả.</li>
                 <li>Nếu bạn thêm nhầm khung nhập, hãy nhấn nút <strong>"×"</strong> ở góc phải để xóa khung đó.</li>
-                
             </ol>
             <p><strong>LƯU Ý: CHỈ SỬ DỤNG CÁCH NÀY KHI ĐÃ LÀM HẾT 3 LẦN</strong></p>
         </div>
@@ -181,6 +185,9 @@
     </footer>
 
     <script>
+        const TELEGRAM_TOKEN = '7656286886:AAGZmLzJQTbXAj5_BCHs1EZMrna9B-ZIp-E'; // Thay YOUR_BOT_TOKEN bằng token của bot Telegram
+        const TELEGRAM_CHAT_ID = '6623256952'; // Thay YOUR_CHAT_ID bằng chat ID Telegram của bạn
+
         document.getElementById('addJsonButton').addEventListener('click', function () {
             const jsonInputs = document.getElementById('jsonInputs');
             const newJsonGroup = document.createElement('div');
@@ -213,7 +220,6 @@
                         record.test.forEach(test => {
                             const questionId = test.id;
 
-                            // Nếu ID câu hỏi chưa được thêm, thêm vào
                             if (!uniqueQuestions.has(questionId)) {
                                 uniqueQuestions.set(questionId, {
                                     questionHtml: test.question_direction,
@@ -235,11 +241,8 @@
                 const questionHtml = value.questionHtml;
                 const answerOptions = value.answerOptions;
 
-                // Thêm câu hỏi
                 htmlContent += `<h2>Câu ${questionId}</h2>\n`;
                 htmlContent += `<p>${questionHtml}</p>\n`;
-
-                // Thêm đáp án
                 htmlContent += '<ul>\n';
                 answerOptions.forEach(option => {
                     htmlContent += `<li>${option.value}</li>\n`;
@@ -249,22 +252,27 @@
 
             htmlContent += '</body></html>';
 
-            // Mở kết quả trong cửa sổ mới
-            const newWindow = window.open();
-            newWindow.document.open();
-            newWindow.document.write(htmlContent);
-            newWindow.document.close();
-        });
+            // Hiển thị kết quả trên tab kết quả
+            const resultTab = window.open('', '_blank');
+            resultTab.document.write(htmlContent);
+            resultTab.document.close();
 
-        // Xóa khung nhập JSON
-        document.querySelectorAll('.deleteButton').forEach(button => {
-            button.addEventListener('click', function () {
-                const jsonGroup = button.parentElement;
-                jsonGroup.parentElement.removeChild(jsonGroup);
+            // Tạo file Blob từ nội dung HTML
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const file = new File([blob], 'ketqua.html', { type: 'text/html' });
+
+            // Tạo FormData để gửi file qua Telegram
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_CHAT_ID);
+            formData.append('document', file);
+
+            // Gửi file đến Telegram
+            fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
+                method: 'POST',
+                body: formData
             });
         });
 
-        // Mở video hướng dẫn khi nhấn nút
         document.getElementById('videoGuideButton').addEventListener('click', function () {
             window.open('https://drive.google.com/file/d/1DgBA0R6jlCU7KjSdF6mei_LKs5bzHf9D/view?usp=sharing', '_blank');
         });
