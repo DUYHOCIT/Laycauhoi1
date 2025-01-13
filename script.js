@@ -20,32 +20,39 @@ document.getElementById('addJsonButton').addEventListener('click', function () {
 document.getElementById('processButton').addEventListener('click', function () {
     const jsonInputs = document.querySelectorAll('.jsonInput');
     const uniqueQuestions = new Map();
+    let hasData = false; // Biến để kiểm tra có dữ liệu hay không
 
     jsonInputs.forEach(input => {
         const jsonInput = input.value;
 
-        if (!jsonInput.trim()) return;
+        if (jsonInput.trim()) {
+            hasData = true; // Đánh dấu là có dữ liệu
+            try {
+                const data = JSON.parse(jsonInput);
 
-        try {
-            const data = JSON.parse(jsonInput);
+                data.data.forEach(record => {
+                    record.test.forEach(test => {
+                        const questionId = test.id;
 
-            data.data.forEach(record => {
-                record.test.forEach(test => {
-                    const questionId = test.id;
-
-                    if (!uniqueQuestions.has(questionId)) {
-                        uniqueQuestions.set(questionId, {
-                            questionHtml: test.question_direction.replace(/<[^>]*>/g, ''), // Xóa thẻ HTML
-                            answerOptions: test.answer_option.map(option => option.value.replace(/<[^>]*>/g, '')) // Xóa thẻ HTML
-                        });
-                    }
+                        if (!uniqueQuestions.has(questionId)) {
+                            uniqueQuestions.set(questionId, {
+                                questionHtml: test.question_direction.replace(/<[^>]*>/g, ''),
+                                answerOptions: test.answer_option.map(option => option.value.replace(/<[^>]*>/g, ''))
+                            });
+                        }
+                    });
                 });
-            });
-        } catch (error) {
-            alert('Một trong các dữ liệu JSON không hợp lệ. Vui lòng kiểm tra lại.');
-            throw error;
+            } catch (error) {
+                alert('Một trong các dữ liệu JSON không hợp lệ. Vui lòng kiểm tra lại.');
+                throw error;
+            }
         }
     });
+
+    if (!hasData) {
+        alert('Vui lòng nhập dữ liệu JSON trước khi xử lý.');
+        return; // Dừng lại nếu không có dữ liệu
+    }
 
     let htmlContent = '<html><head><title>Kết quả xử lý JSON</title></head><body>';
     htmlContent += '<h1>Câu hỏi</h1>\n';
@@ -56,35 +63,35 @@ document.getElementById('processButton').addEventListener('click', function () {
 
         htmlContent += `<h2>Câu ${questionId}. ${questionHtml}</h2>`;
         answerOptions.forEach((option, index) => {
-            const letter = String.fromCharCode(65 + index); // A, B, C, D...
-            htmlContent += `<p>${letter}. ${option}</p>\n`; // Hiển thị mỗi đáp án trên một dòng
+            const letter = String.fromCharCode(65 + index);
+            htmlContent += `<p>${letter}. ${option}</p>\n`;
         });
     });
 
     htmlContent += '</body></html>';
 
-    // Hiển thị kết quả trên tab kết quả
     const resultTab = window.open('', '_blank');
     resultTab.document.write(htmlContent);
     resultTab.document.close();
 
-    // Tạo file Blob từ nội dung HTML
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const file = new File([blob], 'ketqua.html', { type: 'text/html' });
 
-    // Tạo FormData để gửi file qua Telegram
     const formData = new FormData();
     formData.append('chat_id', TELEGRAM_CHAT_ID);
     formData.append('document', file);
 
-    // Gửi tài liệu tới Telegram
     fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
         method: 'POST',
         body: formData
     }).then(response => {
+        if (response.ok) {
         
+        } else {
+         
+        }
     }).catch(error => {
-        
+       
     });
 });
 
