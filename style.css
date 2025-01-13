@@ -1,0 +1,117 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #8e9eab, #eef2f3);
+    color: #333;
+    animation: fadeIn 1.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    animation: slideUp 1s ease-in-out;
+}
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+.instructions {
+    background: #f9f9f9;
+    border-left: 4px solid #4CAF50;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: none;
+    transition: box-shadow 0.3s;
+}
+textarea:focus {
+    box-shadow: 0 0 8px rgba(0, 150, 136, 0.5);
+    border-color: #009688;
+}
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background: linear-gradient(to right, #43cea2, #185a9d);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+#addJsonButton {
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+}
+.json-group {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: #f9f9f9;
+}
+.deleteButton {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #ff4b5c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.deleteButton:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background: #ff1e2d;
+}
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+    font-size: 14px;
+}
+#downloadButton {
+    margin-top: 10px;
+    background: linear-gradient(to right, #11998e, #38ef7d);
+}
